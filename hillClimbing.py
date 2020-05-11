@@ -8,15 +8,18 @@ def f(x):
 
 x = random.uniform(0.5, 2.5) 
 step = 0.0078125
-a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, step, x+step])
+a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
 
 while not ( a[0]<0 and a[2]>0 ):
-    if a[0]<0:
-        x = x+step
-        a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, step, x+step])
-    else:
-        x = x+step
-        a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, step, x+step])
+    if ( a[0]>0 and a[2]>0 ):
+        x = x-step
+        a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
+        while not ( a[0]<0 and a[2]>0 ):
+            x = x-step
+            a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
+        break
+    x = x+step
+    a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
 
 x_value = x
 y_value = f(x_value)
