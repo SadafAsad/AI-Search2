@@ -13,18 +13,18 @@ e = 50
 
 while not ( a[0]<0 and a[2]>0 ):
     if ( a[0]>0 and a[2]>0 ):
-        if e<=1:
+        if e<0.007:
             x = x-step
             a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
             while not ( a[0]<0 and a[2]>0 ):
                 x = x-step
                 a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
             break
-        else:
-            e = e/2
+        e = e/2
     x = x+step
     a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
 
+print(e)
 x_value = x
 y_value = f(x_value)
 print("x=" + str(x_value) + "  y=" + str(y_value))
