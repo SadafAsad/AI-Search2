@@ -13,9 +13,16 @@ def probability(cost, new_cost, temperature):
     if new_cost<cost:
         return 1
     else:
-        return numpy.exp(-(new_cost-cost)/temperature)   
+        return numpy.exp(-(new_cost-cost)/temperature)
 
+step = 0.0078125
 x = random.uniform(0.5, 2.5)
+for cycle in range(1000):
+    fraction = cycle/1000
+    t = temperature(fraction)
+    x_next = x+step
+    if probability(f(x), f(x_next), temperature)>random.randint(0, 1):
+        x = x_next
 
 x_value = x
 y_value = f(x_value)
