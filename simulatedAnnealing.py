@@ -6,6 +6,15 @@ import matplotlib.pyplot as plt
 def f(x):
     return math.sin(10*math.pi*x)/(2*x) + (x-1)**4
 
+def temperature(fraction):
+    return max( 0.01, min(1, 1-fraction) )
+
+def probability(cost, new_cost, temperature):
+    if new_cost<cost:
+        return 1
+    else:
+        return numpy.exp(-(new_cost-cost)/temperature)   
+
 x = random.uniform(0.5, 2.5)
 
 x_value = x
