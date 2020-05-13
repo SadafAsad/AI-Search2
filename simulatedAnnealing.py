@@ -20,8 +20,11 @@ x = random.uniform(0.5, 2.5)
 for cycle in range(1000):
     fraction = cycle/1000
     t = temperature(fraction)
-    x_next = x+step
-    if probability(f(x), f(x_next), t)>random.randint(0, 1):
+    while True:
+        x_next = random.uniform(0.5, 2.5)
+        if x_next != x:
+            break
+    if probability(f(x), f(x_next), t)>random.uniform(0, 1):
         x = x_next
 
 x_value = x
