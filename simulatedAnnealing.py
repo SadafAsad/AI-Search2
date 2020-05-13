@@ -15,7 +15,6 @@ def probability(cost, new_cost, temp):
     else:
         return numpy.exp(-(new_cost-cost)/temp)
 
-step = 0.0078125
 x = random.uniform(0.5, 2.5)
 for cycle in range(1000):
     fraction = cycle/1000
