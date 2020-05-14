@@ -46,5 +46,35 @@ def mutation(chrm):
             high-=1
         return chrm
 
+def summation(chrm):
+    sum = 0
+    for i in range(9):
+        if chrm[i]==1:
+            sum = sum+i+1
+    return sum
+
+def production(chrm):
+    product = 1
+    for i in range(9):
+        if chrm[i]==0:
+            product = product*(i+1)   
+    return product
+    
+def solution(population):
+    for chrm in population:
+        if summation(chrm)==36:
+            if production(chrm)==360:
+                return chrm
+            return []
+    return []
+
+firstGeneration = [
+    [1,0,1,0,1,0,1,0,1,0],
+    [0,1,0,1,0,1,0,1,0,1],
+    [1,1,0,0,1,0,0,0,1,1],
+    [0,0,1,1,0,0,1,1,0,1],
+    [1,1,1,0,0,1,0,1,0,0]
+]
+
 
             
