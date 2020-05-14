@@ -2,20 +2,29 @@ import random
 import numpy
 import matplotlib.pyplot as plt
 
+# oonaei ke 1 hast yani tooye dasteye jam hastan
 # Chromosomes --> (+): [0,1,0,0,0,0,1,1,1,1]
 
-def utility(chrm):
+def summation(chrm):
     sum = 0
     for i in range(10):
         if chrm[i]==1:
             sum = sum+i+1
-    sum_error = abs(36-sum)/36*100
+    return sum
 
+def production(chrm):
     product = 1
     for i in range(10):
         if chrm[i]==0:
-            product = product*(i+1)
-    product_error = abs(360-product)/360*100
+            product = product*(i+1)   
+    return product
+
+def utility(chrm):
+    sum = summation(chrm)
+    sum_error = (abs(36-sum)/36)*100
+
+    product = production(chrm)
+    product_error = (abs(360-product)/360)*100
 
     return (sum_error+product_error)/2
 
@@ -46,20 +55,6 @@ def mutation(chrm):
             chrm[index] = 1
     return chrm
 
-def summation(chrm):
-    sum = 0
-    for i in range(10):
-        if chrm[i]==1:
-            sum = sum+i+1
-    return sum
-
-def production(chrm):
-    product = 1
-    for i in range(10):
-        if chrm[i]==0:
-            product = product*(i+1)   
-    return product
-
 def solution(population):
     for chrm in population:
         if summation(chrm)==36:
@@ -68,23 +63,23 @@ def solution(population):
             return []
     return []
 
-def env(population):
+def geneticAlgorithm(population):
     fitness_avgs = list()
-    cycle = 1
+    generation = 1
     while solution(population)==[]:
 
-        #adadye fitness 4ta chrm ha ro peyda mikone
+        # fitness 4ta chrm ha ro peyda mikone
         fitness_array = list()
         for chrm in population:
             fitness_array.append(utility(chrm))
 
-        #avg fitness e har nasl inja zakhre mikonm
+        # avg fitness e har nasl inja zakhre mikonm
         fitness_sum = 0
         for fitness in fitness_array:
             fitness_sum+=fitness
-        fitness_avgs.append((cycle, fitness_sum/4))
+        fitness_avgs.append((generation, fitness_sum/4))
         
-        #bad tarin ro peyda mikone
+        # bad tarin ro peyda mikone ke too selection nabare
         index = 0
         index_fitness = 0
         max_fitness = fitness_array[0]
@@ -94,7 +89,7 @@ def env(population):
                 index_fitness = index
             index+=1
 
-        #population jadid bad az selection
+        # selection ro anjam mide
         new_population_after_selection = list()
         for i in range(4):
             if i!=index_fitness:
@@ -104,23 +99,23 @@ def env(population):
             random_chrm_index = random.randint(0,3)
         new_population_after_selection.append(population[random_chrm_index])
 
-        #cross over va mutate rooye in 4ta
+        # cross over va mutate rooye select shode va generation jadid mide
         if new_population_after_selection[2]!=new_population_after_selection[3]:
-            gen1, gen2 = crossOver(new_population_after_selection[0], new_population_after_selection[1])
-            population[0] = mutation(gen1)
-            population[1] = mutation(gen2)
-            gen1, gen2 = crossOver(new_population_after_selection[2], new_population_after_selection[3])
-            population[2] = mutation(gen1)
-            population[3] = mutation(gen2)
+            chrm1, chrm2 = crossOver(new_population_after_selection[0], new_population_after_selection[1])
+            population[0] = mutation(chrm1)
+            population[1] = mutation(chrm2)
+            chrm1, chrm2 = crossOver(new_population_after_selection[2], new_population_after_selection[3])
+            population[2] = mutation(chrm1)
+            population[3] = mutation(chrm2)
         else:
-            gen1, gen2 = crossOver(new_population_after_selection[0], new_population_after_selection[2])
-            population[0] = mutation(gen1)
-            population[1] = mutation(gen2)
-            gen1, gen2 = crossOver(new_population_after_selection[1], new_population_after_selection[3])
-            population[2] = mutation(gen1)
-            population[3] = mutation(gen2)
+            chrm1, chrm2 = crossOver(new_population_after_selection[0], new_population_after_selection[2])
+            population[0] = mutation(chrm1)
+            population[1] = mutation(chrm2)
+            chrm1, chrm2 = crossOver(new_population_after_selection[1], new_population_after_selection[3])
+            population[2] = mutation(chrm1)
+            population[3] = mutation(chrm2)
 
-        cycle+=1
+        generation+=1
 
     return (solution(population), fitness_avgs)
 
@@ -135,20 +130,47 @@ def plot(fitness_list):
     plt.plot(x_values, y_values, color='green', linestyle='dashed', linewidth = 3, 
             marker='o', markerfacecolor='blue', markersize=10) 
 
-    plt.ylim(1,100) 
+    plt.ylim(1,10000) 
     plt.xlim(1,10) 
     plt.xlabel('generation') 
     plt.ylabel('fitness average') 
     plt.title('genetic algorithm speed change') 
     plt.show() 
 
-firstGeneration = [
-    [1,0,1,0,1,0,1,0,1,0],
-    [0,1,0,1,0,1,0,1,0,1],
-    [1,1,0,0,1,0,0,0,1,1],
-    [0,0,1,1,0,0,1,1,0,1]
-]
+def firstGeneration():
+    population = list()
+    for i in range(4):
+        random_index = [-1,-1,-1,-1,-1]
+        for i in range(5):
+            index = random.randint(0,9)
+            while index in random_index:
+                index = random.randint(0,9)
+            random_index[i] = index
+        
+        chrm = [0,0,0,0,0,0,0,0,0,0]
+        for i in random_index:
+            chrm[i] = 1
 
-ansSum, fitness_list = env(firstGeneration)
-print(ansSum)
+        population.append(chrm)
+    return population
+
+def answer(chromosome):
+    sum_pile = ""
+    for i in range(10):
+        if chromosome[i]==1:
+            sum_pile+=" "
+            sum_pile+=str(i+1)
+    
+    product_pile = ""
+    for i in range(10):
+        if chromosome[i]==0:
+            product_pile+=" "
+            product_pile+=str(i+1)
+    
+    print("summation pile: " + sum_pile)
+    print("production pile: " + product_pile)
+
+population = firstGeneration()
+ansSum, fitness_list = geneticAlgorithm(population)
+answer(ansSum)
 plot(fitness_list)
