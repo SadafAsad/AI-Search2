@@ -26,10 +26,12 @@ def crossOver(chrm1, chrm2):
     for r in range(i):
         chrm3.append(chrm1[r])
         chrm4.append(chrm2[r])
+    
+    temp = i
     for r in range(10-i):
-        chrm3.append(chrm2[i])
-        chrm4.append(chrm1[i])
-        i+=1
+        chrm3.append(chrm2[temp])
+        chrm4.append(chrm1[temp])
+        temp+=1
     
     return (chrm3, chrm4)
 
@@ -128,3 +130,4 @@ firstGeneration = [
 ]
 
 ansSum = env(firstGeneration)
+print(ansSum)
