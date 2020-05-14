@@ -1,4 +1,5 @@
 import numpy
+import random
 
 # Chromosomes --> (+): [0,1,0,0,0,0,1,1,1,1]
 
@@ -11,36 +12,45 @@ def utility(chrm):
 
 def crossOver(chrm1, chrm2):
     chrm3 = list()
-    for i in range(10):
-        if i%2==0:
-            chrm3.append(chrm1[i])
-        else:
-            chrm3.append(chrm2[i])
-    return chrm3
+    chrm4 = list()
+
+    i = random.randint(1,9)
+
+    for r in range(i):
+        chrm3.append(chrm1[r])
+        chrm4.append(chrm2[r])
+    for r in range(10-i):
+        chrm3.append(chrm2[i])
+        chrm4.append(chrm1[i])
+        i+=1
+    
+    return (chrm3, chrm4)
+
+# def popMute(population):
+#     for i in range(25):
+#         for r in range(25):
+#             if population[i+5]==population[r+5]:
 
 def mutation(chrm):
     count = 0
     for i in chrm:
         if i==1:
-            count+=1
+            count+=1 
+
     if count>5:
         toChange = count-5
-        low = 0
-        high = 9
-        changed = 0
-        for i in range(toChange):
-            if changed==toChange:
-                break
-            if chrm[low]==1:
-                chrm[low] = 0
-                changed+=1
-            low+=1
-            if changed==toChange:
-                break
-            if chrm[high]==1:
-                chrm[high] = 0
-                changed+=1
-            high-=1
+        while toChange!=0:
+            index = random.randint(0,9)
+            if chrm[index]==1:
+                chrm[index] = 0
+                toChange-=1
+    elif count<5:
+        toChange = 5-count
+        while toChange!=0:
+            index = random.randint(0,9)
+            if chrm[index]==0:
+                chrm[index] = 1
+                toChange-=1
     return chrm
 
 def summation(chrm):
@@ -74,7 +84,9 @@ def env(population):
         for i in range(5):
             for r in range(5):
                 if i!=r:
-                    newPopulation.append( mutation(crossOver(population[i], population[r])) )
+                    gen1, gen2 = crossOver(population[i], population[r])
+                    newPopulation.append( mutation(gen1) )
+                    newPopulation.append( mutation(gen2) )
 
         chrmFitnesses = list()
         for chrm in newPopulation:
@@ -82,8 +94,8 @@ def env(population):
 
         minfitt = numpy.argpartition(chrmFitnesses, 5)
         newGeneration = list()
-        for i in minfitt:
-            newGeneration.append(newPopulation[i])
+        for i in range(5):
+            newGeneration.append(newPopulation[minfitt[i]])
         population = newGeneration
     return solution(population)
 
