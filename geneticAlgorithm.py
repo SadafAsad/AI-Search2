@@ -11,16 +11,11 @@ def utility(chrm):
 
 def crossOver(chrm1, chrm2):
     chrm3 = list()
-    chrm3.append(chrm1[0])
-    chrm3.append(chrm2[1])
-    chrm3.append(chrm2[2])
-    chrm3.append(chrm1[3])
-    chrm3.append(chrm2[4])
-    chrm3.append(chrm2[5])
-    chrm3.append(chrm1[6])
-    chrm3.append(chrm2[7])
-    chrm3.append(chrm2[8])
-    chrm3.append(chrm1[9])
+    for i in range(9):
+        if i%2==0:
+            chrm3[i] = chrm1[i]
+        else:
+            chrm3[i] = chrm2[i]
     return chrm3
 
 def mutation(chrm):
