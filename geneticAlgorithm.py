@@ -37,31 +37,13 @@ def crossOver(chrm1, chrm2):
     
     return (chrm3, chrm4)
 
-# def popMute(population):
-#     for i in range(25):
-#         for r in range(25):
-#             if population[i+5]==population[r+5]:
-
 def mutation(chrm):
-    count = 0
-    for i in chrm:
-        if i==1:
-            count+=1 
-
-    if count>5:
-        toChange = count-5
-        while toChange!=0:
-            index = random.randint(0,9)
-            if chrm[index]==1:
-                chrm[index] = 0
-                toChange-=1
-    elif count<5:
-        toChange = 5-count
-        while toChange!=0:
-            index = random.randint(0,9)
-            if chrm[index]==0:
-                chrm[index] = 1
-                toChange-=1
+    for i in range(4):
+        index = random.randint(0,9)
+        if chrm[index]==1:
+            chrm[index] = 0
+        else:
+            chrm[index] = 1
     return chrm
 
 def summation(chrm):
