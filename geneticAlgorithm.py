@@ -154,7 +154,7 @@ def plot(fitness_list):
             marker='o', markerfacecolor='blue', markersize=10) 
 
     plt.ylim(1,100) 
-    plt.xlim(1,1000) 
+    plt.xlim(1,10) 
     plt.xlabel('generation') 
     plt.ylabel('fitness average') 
     plt.title('genetic algorithm speed change') 
