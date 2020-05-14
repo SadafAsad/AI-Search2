@@ -134,7 +134,7 @@ def plot(fitness_list):
     plt.xlim(1,10) 
     plt.xlabel('generation') 
     plt.ylabel('fitness average') 
-    plt.title('genetic algorithm speed change') 
+    plt.title('genetic algorithm speed change')
     plt.show() 
 
 def firstGeneration():
@@ -150,7 +150,6 @@ def firstGeneration():
         chrm = [0,0,0,0,0,0,0,0,0,0]
         for i in random_index:
             chrm[i] = 1
-
         population.append(chrm)
     return population
 
