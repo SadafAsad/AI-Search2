@@ -4,18 +4,18 @@ import numpy
 
 def utility(chrm):
     sum = 0
-    for i in range(9):
+    for i in range(10):
         if chrm[i]==1:
             sum = sum+i+1
     return abs(36-sum)
 
 def crossOver(chrm1, chrm2):
     chrm3 = list()
-    for i in range(9):
+    for i in range(10):
         if i%2==0:
-            chrm3[i] = chrm1[i]
+            chrm3.append(chrm1[i])
         else:
-            chrm3[i] = chrm2[i]
+            chrm3.append(chrm2[i])
     return chrm3
 
 def mutation(chrm):
@@ -24,11 +24,11 @@ def mutation(chrm):
         if i==1:
             count+=1
     if count>5:
-        toChange = 5-count
+        toChange = count-5
         low = 0
         high = 9
         changed = 0
-        for i in range(toChange-1):
+        for i in range(toChange):
             if changed==toChange:
                 break
             if chrm[low]==1:
@@ -45,14 +45,14 @@ def mutation(chrm):
 
 def summation(chrm):
     sum = 0
-    for i in range(9):
+    for i in range(10):
         if chrm[i]==1:
             sum = sum+i+1
     return sum
 
 def production(chrm):
     product = 1
-    for i in range(9):
+    for i in range(10):
         if chrm[i]==0:
             product = product*(i+1)   
     return product
@@ -71,8 +71,8 @@ def env(population):
         for chrm in population:
             newPopulation.append(chrm)
 
-        for i in range(4):
-            for r in range(4):
+        for i in range(5):
+            for r in range(5):
                 if i!=r:
                     newPopulation.append( mutation(crossOver(population[i], population[r])) )
 
