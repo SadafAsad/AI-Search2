@@ -1,3 +1,5 @@
+import numpy
+
 # Chromosomes --> (+): [0,1,0,0,0,0,1,1,1,1]
 
 def utility(chrm):
@@ -44,7 +46,7 @@ def mutation(chrm):
                 chrm[high] = 0
                 changed+=1
             high-=1
-        return chrm
+    return chrm
 
 def summation(chrm):
     sum = 0
@@ -59,7 +61,7 @@ def production(chrm):
         if chrm[i]==0:
             product = product*(i+1)   
     return product
-    
+
 def solution(population):
     for chrm in population:
         if summation(chrm)==36:
@@ -67,6 +69,28 @@ def solution(population):
                 return chrm
             return []
     return []
+
+def env(population):
+    while solution(population)==[]:
+        newPopulation = list()
+        for chrm in population:
+            newPopulation.append(chrm)
+
+        for i in range(4):
+            for r in range(4):
+                if i!=r:
+                    newPopulation.append( mutation(crossOver(population[i], population[r])) )
+
+        chrmFitnesses = list()
+        for chrm in newPopulation:
+            chrmFitnesses.append( utility(chrm) )
+
+        minfitt = numpy.argpartition(chrmFitnesses, 5)
+        newGeneration = list()
+        for i in minfitt:
+            newGeneration.append(newPopulation[i])
+        population = newGeneration
+    return solution(population)
 
 firstGeneration = [
     [1,0,1,0,1,0,1,0,1,0],
@@ -76,5 +100,4 @@ firstGeneration = [
     [1,1,1,0,0,1,0,1,0,0]
 ]
 
-
-            
+ansSum = env(firstGeneration)
