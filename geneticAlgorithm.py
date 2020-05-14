@@ -1,4 +1,3 @@
-import numpy
 import random
 
 # Chromosomes --> (+): [0,1,0,0,0,0,1,1,1,1]
@@ -8,7 +7,15 @@ def utility(chrm):
     for i in range(10):
         if chrm[i]==1:
             sum = sum+i+1
-    return abs(36-sum)
+    sum_error = abs(36-sum)/36*100
+
+    product = 1
+    for i in range(10):
+        if chrm[i]==0:
+            product = product*(i+1)
+    product_error = abs(360-product)/360*100
+
+    return (sum_error+product_error)/2
 
 def crossOver(chrm1, chrm2):
     chrm3 = list()
