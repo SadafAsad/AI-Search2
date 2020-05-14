@@ -1,4 +1,6 @@
 import random
+import numpy
+import matplotlib.pyplot as plt
 
 # Chromosomes --> (+): [0,1,0,0,0,0,1,1,1,1]
 
@@ -85,12 +87,20 @@ def solution(population):
     return []
 
 def env(population):
+    fitness_avgs = list()
+    cycle = 1
     while solution(population)==[]:
 
         #adadye fitness 4ta chrm ha ro peyda mikone
         fitness_array = list()
         for chrm in population:
             fitness_array.append(utility(chrm))
+
+        #avg fitness e har nasl inja zakhre mikonm
+        fitness_sum = 0
+        for fitness in fitness_array:
+            fitness_sum+=fitness
+        fitness_avgs.append((cycle, fitness_sum/4))
         
         #bad tarin ro peyda mikone
         index = 0
@@ -113,14 +123,42 @@ def env(population):
         new_population_after_selection.append(population[random_chrm_index])
 
         #cross over va mutate rooye in 4ta
-        gen1, gen2 = crossOver(population[0], population[1])
-        population[0] = mutation(gen1)
-        population[1] = mutation(gen2)
-        gen1, gen2 = crossOver(population[2], population[3])
-        population[2] = mutation(gen1)
-        population[3] = mutation(gen2)
+        if new_population_after_selection[2]!=new_population_after_selection[3]:
+            gen1, gen2 = crossOver(new_population_after_selection[0], new_population_after_selection[1])
+            population[0] = mutation(gen1)
+            population[1] = mutation(gen2)
+            gen1, gen2 = crossOver(new_population_after_selection[2], new_population_after_selection[3])
+            population[2] = mutation(gen1)
+            population[3] = mutation(gen2)
+        else:
+            gen1, gen2 = crossOver(new_population_after_selection[0], new_population_after_selection[2])
+            population[0] = mutation(gen1)
+            population[1] = mutation(gen2)
+            gen1, gen2 = crossOver(new_population_after_selection[1], new_population_after_selection[3])
+            population[2] = mutation(gen1)
+            population[3] = mutation(gen2)
 
-    return solution(population)
+        cycle+=1
+
+    return (solution(population), fitness_avgs)
+
+def plot(fitness_list):
+    x_values = list()
+    y_values = list()
+    for fitness in fitness_list:
+        x, avg = fitness
+        x_values.append(x)
+        y_values.append(avg)
+    
+    plt.plot(x_values, y_values, color='green', linestyle='dashed', linewidth = 3, 
+            marker='o', markerfacecolor='blue', markersize=10) 
+
+    plt.ylim(1,100) 
+    plt.xlim(1,1000) 
+    plt.xlabel('generation') 
+    plt.ylabel('fitness average') 
+    plt.title('genetic algorithm speed change') 
+    plt.show() 
 
 firstGeneration = [
     [1,0,1,0,1,0,1,0,1,0],
@@ -129,5 +167,6 @@ firstGeneration = [
     [0,0,1,1,0,0,1,1,0,1]
 ]
 
-ansSum = env(firstGeneration)
+ansSum, fitness_list = env(firstGeneration)
 print(ansSum)
+plot(fitness_list)
