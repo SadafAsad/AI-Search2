@@ -18,11 +18,9 @@ def plot(x):
     plt.ylabel('fx')
     plt.show() 
 
-def hillClimbing():
-    x = random.uniform(0.5, 2.5) 
+def hillClimbing(x):
     step = 0.0078125
     a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
-
     while not ( a[0]<0 and a[2]>0 ):
         if ( a[0]>0 and a[2]>0 ):
             x = x-step
@@ -35,5 +33,6 @@ def hillClimbing():
         a = numpy.gradient([f(x-step), f(x), f(x+step)], [x-step, x, x+step])
     return x
 
-x = hillClimbing()
+x = random.uniform(0.5, 2.5) 
+x = hillClimbing(x)
 plot(x)
